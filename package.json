@@ -1,0 +1,38 @@
+{
+  "name": "gameboy-ts-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.5.2",
+    "gameboy-ts": "git://github.com/miwest929/gameboy-ts.git#9d880a7d3538a2178de08348d06c8da4eff08dab",
+    "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
+    "raven-js": "^3.27.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-ga": "^2.5.7",
+    "react-router-dom": "^5.0.0",
+    "reactstrap": "^7.1.0",
+    "yarn": "^1.22.5"
+  },
+  "devDependencies": {
+    "react-scripts": "^3.4.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
