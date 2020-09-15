@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { Button, Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 
-import config from "./config";
-import ControlsModal from "./ControlsModal";
+//import config from "./config";
 import Emulator from "./Emulator";
-import RomLibrary from "./RomLibrary";
+//import RomLibrary from "./RomLibrary";
 import { loadBinary } from "./utils";
 
 import "./RunPage.css";
@@ -121,44 +120,16 @@ class RunPage extends Component {
   load = () => {
     if (this.props.match.params.slug) {
       const slug = this.props.match.params.slug;
-      const isLocalROM = /^local-/.test(slug);
-      const romHash = slug.split("-")[1];
-      const romInfo = isLocalROM
-        ? RomLibrary.getRomInfoByHash(romHash)
-        : config.ROMS[slug];
-
-      if (!romInfo) {
-        this.setState({ error: `No such ROM: ${slug}` });
-        return;
-      }
-
-      if (isLocalROM) {
-        this.setState({ romName: romInfo.name });
-        const localROMData = localStorage.getItem("blob-" + romHash);
-        this.handleLoaded(localROMData);
-      } else {
-        this.setState({ romName: romInfo.description });
-        this.currentRequest = loadBinary(
-          romInfo.url,
-          (err, data) => {
-            if (err) {
-              this.setState({ error: `Error loading ROM: ${err.message}` });
-            } else {
-              this.handleLoaded(data);
-            }
-          },
-          this.handleProgress
-        );
-      }
-    } else if (this.props.location.state && this.props.location.state.file) {
-      let reader = new FileReader();
-      reader.readAsBinaryString(this.props.location.state.file);
-      reader.onload = e => {
-        this.currentRequest = null;
-        this.handleLoaded(reader.result);
-      };
-    } else {
-      this.setState({ error: "No ROM provided" });
+      console.log(`Loading '${slug}.gb gameboy rom.`);
+      // Uint8Array.from
+      loadBinary(`http://127.0.0.1:8081/${slug}.gb`, (err, data) => {
+        if (err) {
+            this.setState({ error: `Error loading ROM: ${err.message}` });
+        } else {
+            this.handleLoaded(data);
+        }
+      },
+      this.handleProgress);    
     }
   };
 
@@ -169,6 +140,8 @@ class RunPage extends Component {
   };
 
   handleLoaded = data => {
+    //const romData = new Uint8Array(data);
+    console.log(data);
     this.setState({ running: true, loading: false, romData: data });
   };
 

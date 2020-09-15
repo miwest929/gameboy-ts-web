@@ -1,13 +1,8 @@
-import Raven from "raven-js";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Gameboy, Cartridge } from "gameboy-ts";
-
-import FrameTimer from "./FrameTimer";
-//import GamepadController from "./GamepadController";
-//import KeyboardController from "./KeyboardController";
+//import FrameTimer from "./FrameTimer";
 import Screen from "./Screen";
-//import Speakers from "./Speakers";
 
 /*
  * Runs the emulator.
@@ -36,28 +31,24 @@ class Emulator extends Component {
     );
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Initial layout
     this.fitInParent();
 
-    this.gb = new Gameboy(); //({
-    //   onFrame: this.screen.setBuffer,
-    //   onStatusUpdate: console.log,
-    //   onAudioSample: this.speakers.writeSample,
-    //   sampleRate: this.speakers.getSampleRate()
-    // });
-    const cart = new Cartridge(this.props.romData);
-    await gameboy.loadCartridge(cart);
+    this.gb = new Gameboy();
+    console.log(this.props.romData);
+    const cart = new Cartridge('tetris', this.props.romData);
+    await this.gb.loadCartridge(cart);
+    // this.gb.loadROM(this.props.romData);
 
     // For debugging. (["nes"] instead of .nes to avoid VS Code type errors.)
     window["gb"] = this.gb;
 
-    this.frameTimer = new FrameTimer({
-      onGenerateFrame: Raven.wrap(this.gb.frame),
-      onWriteFrame: Raven.wrap(this.screen.writeBuffer)
-    });
+    // this.frameTimer = new FrameTimer({
+    //   onGenerateFrame: this.gb.frame,
+    //   onWriteFrame: this.screen.writeBuffer
+    // });
 
-    this.gb.loadROM(this.props.romData);
     this.start();
   }
 
@@ -78,19 +69,19 @@ class Emulator extends Component {
     // TODO: handle changing romData
   }
 
-  start = () => {
+  start = async () => {
     this.gb.powerOn();
-    this.frameTimer.start();
-    //this.speakers.start();
-    // this.fpsInterval = setInterval(() => {
-    //   console.log(`FPS: ${this.gb.getFPS()}`);
-    // }, 1000);
+    await this.gb.executeNextFrame();
+    debugger
+    console.log("FRAME EXECUTED");
+    // await this.gb.executeNextTick();
+    // await this.gb.executeNextTick();
+    // await this.gb.executeNextTick();
+    //this.frameTimer.start();
   };
 
   stop = () => {
-    //this.frameTimer.stop();
-    //this.speakers.stop();
-    //clearInterval(this.fpsInterval);
+    // TODO: Implement
   };
 
   /*

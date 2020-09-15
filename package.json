@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.5.2",
-    "gameboy-ts": "git://github.com/miwest929/gameboy-ts.git#9d880a7d3538a2178de08348d06c8da4eff08dab",
+    "gameboy-ts": "git://github.com/miwest929/gameboy-ts.git#2dad7045d3c9643f0e2dec88d1172de044f2b5e7",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "raven-js": "^3.27.2",
@@ -16,7 +16,8 @@
     "yarn": "^1.22.5"
   },
   "devDependencies": {
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.3",
+    "url": "^0.11.0"
   },
   "scripts": {
     "start": "react-scripts start",

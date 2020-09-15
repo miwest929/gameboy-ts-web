@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import ListPage from "./ListPage";
 import RunPage from "./RunPage";
 import { handleError } from "./utils";
 import "./App.css";
@@ -26,7 +25,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Route exact path="/" component={ListPage} />
           <Route exact path="/run" component={RunPage} />
           <Route exact path="/run/:slug" component={RunPage} />
         </div>
