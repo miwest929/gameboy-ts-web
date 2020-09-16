@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Gameboy, Cartridge } from "gameboy-ts";
-//import FrameTimer from "./FrameTimer";
+import FrameTimer from "./FrameTimer";
 import Screen from "./Screen";
 
 /*
@@ -36,18 +36,23 @@ class Emulator extends Component {
     this.fitInParent();
 
     this.gb = new Gameboy();
-    console.log(this.props.romData);
     const cart = new Cartridge('tetris', this.props.romData);
     await this.gb.loadCartridge(cart);
-    // this.gb.loadROM(this.props.romData);
 
     // For debugging. (["nes"] instead of .nes to avoid VS Code type errors.)
     window["gb"] = this.gb;
 
-    // this.frameTimer = new FrameTimer({
-    //   onGenerateFrame: this.gb.frame,
-    //   onWriteFrame: this.screen.writeBuffer
-    // });
+    this.frameTimer = new FrameTimer({
+      onGenerateFrame: async () => {
+        const callId = Math.round(Math.random() * 3000);
+        console.log(`[${callId}] invoking onGenerateFrame.`); 
+        const t0 = performance.now();
+        await this.gb.executeNextFrame();
+        const t1 = performance.now();
+        console.log(`[${callId}] generateFrame took ${t1 - t0} milliseconds.`);
+      },
+      onWriteFrame: () => {} //vthis.screen.writeBuffer
+    });
 
     this.start();
   }
@@ -71,17 +76,11 @@ class Emulator extends Component {
 
   start = async () => {
     this.gb.powerOn();
-    await this.gb.executeNextFrame();
-    debugger
-    console.log("FRAME EXECUTED");
-    // await this.gb.executeNextTick();
-    // await this.gb.executeNextTick();
-    // await this.gb.executeNextTick();
-    //this.frameTimer.start();
+    this.frameTimer.start();
   };
 
   stop = () => {
-    // TODO: Implement
+    this.frameTimer.stop();
   };
 
   /*
@@ -94,7 +93,7 @@ class Emulator extends Component {
 
 Emulator.propTypes = {
   paused: PropTypes.bool,
-  romData: PropTypes.string.isRequired
+  romData: PropTypes.object.isRequired
 };
 
 export default Emulator;

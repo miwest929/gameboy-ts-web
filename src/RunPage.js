@@ -140,8 +140,6 @@ class RunPage extends Component {
   };
 
   handleLoaded = data => {
-    //const romData = new Uint8Array(data);
-    console.log(data);
     this.setState({ running: true, loading: false, romData: data });
   };
 
